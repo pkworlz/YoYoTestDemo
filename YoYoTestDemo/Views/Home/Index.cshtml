@@ -1,12 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
 }
+@model YoYoTestDemo.ViewModel.HomeViewModel
 
 <div class="container">
     <div class="row">
         <div class="col">
             <div class="text-center">
-                <h1 class="display-4">WELCOME TO YO-YO-TEST</h1>
+                <h1 class="display-4">WELCOME TO <br /> YO-YO-TEST</h1>
             </div>
         </div>
     </div>
@@ -14,8 +16,9 @@
     <div class="row">
         <div class="col">
             <div class="text-center">
-                <button type="button" class="btn btn-primary rounded-pill">Play / Pause</button>
-                <h3 class="">Time 00:00</h3>
+                <button id="playBtn" onclick="start();" type="button" class="btn btn-primary rounded-pill">Start</button> &nbsp;
+                <button id="playBtn" onclick="stop();" type="button" class="btn btn-primary rounded-pill">Stop</button>
+                <h3 id="timer" class="">Time 00:00</h3>
                 <h3 class="">Progress, Level, Speed </h3>
             </div>
         </div>
@@ -23,7 +26,7 @@
     <br />
     <div class="row text-center">
         <div class="col">
-            <p>Next Shuttule</p>
+            <p>Next Shuttle</p>
         </div>
         <div class="col">
             <p>Total Time</p>
@@ -42,26 +45,22 @@
             <hr />
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            Runner 1
+    @foreach (var item in Model.players)
+    {
+        <div class="row">
+            <div class="col-8">
+                @item.name
+            </div>
+            <div class="col-2">
+                Warn
+            </div>
+            <div class="col-2">
+                Stop
+            </div>
         </div>
-        <div class="col">
-            Warn
-        </div>
-        <div class="col">
-            Stop
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            Runner 2
-        </div>
-        <div class="col">
-            Warn
-        </div>
-        <div class="col">
-            Stop
-        </div>
-    </div>
+    }
+
 </div>
+
+
+

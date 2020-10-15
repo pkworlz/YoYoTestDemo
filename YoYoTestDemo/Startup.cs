@@ -12,6 +12,7 @@ using YoYoTestDemo.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using YoYoTestDemo.Services;
 
 namespace YoYoTestDemo
 {
@@ -34,6 +35,9 @@ namespace YoYoTestDemo
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            // custom services
+            services.AddScoped<IPlayerService, PlayerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,21 +6,30 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using YoYoTestDemo.Models;
+using YoYoTestDemo.Services;
+using YoYoTestDemo.ViewModel;
 
 namespace YoYoTestDemo.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private IPlayerService _playerService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IPlayerService playerService)
         {
             _logger = logger;
+            _playerService = playerService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var homeViewModel = new HomeViewModel();
+
+            var allPlayers = _playerService.GetPlayers();
+
+            homeViewModel.players = allPlayers;
+            return View(homeViewModel);
         }
 
         public IActionResult Privacy()
