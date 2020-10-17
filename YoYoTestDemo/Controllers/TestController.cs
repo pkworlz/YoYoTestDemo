@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using YoYoTestDemo.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,6 +22,29 @@ namespace YoYoTestDemo.Controllers
         {
             return new string[] { "value1", "value2" };
         }
+
+        [HttpGet("FitnessRating")]
+        public ActionResult GetFitnessRating()
+        {
+            var fitnessRatingData = new List<FitnessRating>();
+            var folderDetails = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\{"json\\fitnessrating_beeptest.json"}");
+            var jsonText = System.IO.File.ReadAllText(folderDetails);
+
+            JArray jsonArray = JArray.Parse(jsonText);
+            JObject json = JObject.Parse(jsonArray[0].ToString());
+            foreach (var item in jsonArray)
+            {
+                var jsonObj = JsonConvert.DeserializeObject<FitnessRating>(item.ToString());
+                fitnessRatingData.Add(jsonObj);
+            }
+
+            return Ok(fitnessRatingData);
+        }
+
+        //private ActionResult Json(object p)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         // GET api/<TestController>/5
         [HttpGet("{id}")]

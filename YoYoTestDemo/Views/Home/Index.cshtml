@@ -17,9 +17,12 @@
         <div class="col">
             <div class="text-center">
                 <button id="playBtn" onclick="start();" type="button" class="btn btn-primary rounded-pill">Start</button> &nbsp;
-                <button id="playBtn" onclick="stop();" type="button" class="btn btn-primary rounded-pill">Stop</button>
-                <h3 id="timer" class="">Time 00:00</h3>
-                <h3 class="">Progress, Level, Speed </h3>
+                <button id="playBtn" onclick="stop();" type="button" class="btn btn-primary rounded-pill">Pause</button>
+                @*<h3 class="">Progress, Level, Speed </h3>*@
+                <br />
+                <p>Level <span id="currentShuttleLevelNumber">-</span> </p>
+                <p>Shuttle <span id="currentShuttleNumber">-</span> </p>
+                <p><span id="currentShuttleSpeed">0</span> km/hr</p>
             </div>
         </div>
     </div>
@@ -27,13 +30,17 @@
     <div class="row text-center">
         <div class="col">
             <p>Next Shuttle</p>
+            <p id="cdTimer">__:__</p>
+
         </div>
         <div class="col">
             <p>Total Time</p>
+            <p id="timer" class="">__:__</p>
 
         </div>
         <div class="col">
             <p>Total Distance</p>
+            <p id="currentTotalDistance">00</p>
 
         </div>
     </div>
