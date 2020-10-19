@@ -7,15 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YoYoTestDemo.Models;
+using YoYoTestDemo.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace YoYoTestDemo.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class TestController : ControllerBase
     {
+
+        private IPlayerService _playerService;
+
+        public TestController(IPlayerService playerService)
+        {
+            _playerService = playerService;
+        }
+
         // GET: api/<TestController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -31,7 +41,6 @@ namespace YoYoTestDemo.Controllers
             var jsonText = System.IO.File.ReadAllText(folderDetails);
 
             JArray jsonArray = JArray.Parse(jsonText);
-            JObject json = JObject.Parse(jsonArray[0].ToString());
             foreach (var item in jsonArray)
             {
                 var jsonObj = JsonConvert.DeserializeObject<FitnessRating>(item.ToString());
@@ -42,17 +51,45 @@ namespace YoYoTestDemo.Controllers
         }
 
 
+        [HttpGet("WarnPlayer/{id}")]
+        public ActionResult WarnPlayer(int id)
+        {
+            var allPlayers = _playerService.GetPlayers();
+            try
+            {
+                int editIndex = allPlayers.FindIndex(o => o.id == id);
+                allPlayers[editIndex].warn = true;
+                return Ok(allPlayers[editIndex]);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+           
+        }
+
+        [HttpGet("StopPlayer/{id}")]
+        public ActionResult StopPlayer(int id)
+        {
+            var allPlayers = _playerService.GetPlayers();
+            try
+            {
+                int editIndex = allPlayers.FindIndex(o => o.id == id);
+                allPlayers[editIndex].stop = true;
+                return Ok(allPlayers[editIndex]);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+
+        }
+
         // GET api/<TestController>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
-        }
-
-        // POST api/<TestController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
         }
 
         // PUT api/<TestController>/5

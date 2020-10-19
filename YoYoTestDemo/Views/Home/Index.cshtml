@@ -58,18 +58,25 @@
             <hr />
         </div>
     </div>
+
+    @{ 
+        int sNo = 0;
+    }
     @foreach (var item in Model.players)
     {
+        sNo++;
+
         <div class="row" id="player-@item.id">
             <div class="col-8">
-                @item.name
+              @sNo.   @item.name
             </div>
-            <div class="col-2">
-                <button id="warnBtnPlayer-@item.id" onclick='warnPlayer("Player-@item.id");' type="button" class="btn btn-outline-warning btn-sm rounded-pill">Warn</button>
+            <div class="col-2 btnPlayer-@item.id btnPlayer" hidden>
+                <button id="warnBtnPlayer-@item.id" onclick='warnPlayer("Player-@item.id", @item.id);' type="button" class="btn btn-outline-warning btn-sm rounded-pill">Warn</button>
             </div>
-            <div class="col-2">
-                <button id="stopBtnPlayer-@item.id" onclick='stopPlayer("Player-@item.id");' type="button" class="btn btn-outline-danger btn-sm rounded-pill">Stop</button>
+            <div class="col-2 btnPlayer-@item.id btnPlayer" hidden>
+                <button id="stopBtnPlayer-@item.id" onclick='stopPlayer("Player-@item.id", @item.id);' type="button" class="btn btn-outline-danger btn-sm rounded-pill">Stop</button>
             </div>
+            <div class="col-4 finishedPlayer-@item.id" hidden> </div>
         </div>
         <br />
 

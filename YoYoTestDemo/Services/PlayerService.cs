@@ -17,7 +17,7 @@ namespace YoYoTestDemo.Services
             return players[editIndex];
         }
 
-        public IEnumerable<Player> GetPlayers()
+        public List<Player> GetPlayers()
         {
 
             var player1 = new Player
@@ -82,7 +82,7 @@ namespace YoYoTestDemo.Services
 
     public interface IPlayerService
     {
-        IEnumerable<Player> GetPlayers();
+        List<Player> GetPlayers();
         Player EditPlayer(Player player);
     }
 }

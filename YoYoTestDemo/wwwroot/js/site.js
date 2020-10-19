@@ -13,6 +13,13 @@ var seconds;
 var minutes;
 var currentTime;
 
+// CountDown Timer
+var cdSeconds;
+var cdMinutes;
+var cdTimerElement;
+var cdCurrentTime;
+var countDown;
+
 var siteBaseUrl = "https://localhost:5001";
 
 var fitnessRatingData;
@@ -49,6 +56,7 @@ function init() {
     $("#pauseBtn").hide();
     $("#playBtn").show();
 
+
 }
 
 
@@ -72,6 +80,9 @@ function start() {
 
     $("#pauseBtn").show();
     $("#playBtn").hide();
+
+    $(".btnPlayer").removeAttr("hidden");
+
 }
 
 // Timer Logic..
@@ -88,21 +99,16 @@ function timer() {
 
 }
 
-// CountDown Timer
-var cdSeconds;
-var cdMinutes;
-var cdTimerElement;
-var cdCurrentTime;
-var countDown;
 
 function countDownTimer() {
+    countDown--;
 
     cdSeconds = pad(countDown % 60);
     cdMinutes = pad(parseInt(countDown / 60));
 
     cdCurrentTime = cdMinutes + ":" + cdSeconds
 
-    countDown--;
+
     
     cdTimerElement.text(cdCurrentTime);
 
@@ -157,8 +163,10 @@ function processSuttle() {
                 if (index > 0) currentTotalDistance = item.accumulatedShuttleDistance;
 
                 if (index < fitnessRatingData.length) {
-                    let countDownSeconds = calculateCountDownTime(fitnessRatingData[index], fitnessRatingData[index + 1]);
-                    countDown = countDownSeconds;
+                    if (index !== fitnessRatingData.length - 1) {
+                        let countDownSeconds = calculateCountDownTime(fitnessRatingData[index], fitnessRatingData[index + 1]);
+                        countDown = countDownSeconds;
+                    }
 
                     //resetting timer
                     if (cdTimerIntervalObj) {
@@ -239,18 +247,32 @@ function percentage(partialValue, totalValue) {
 } 
 
 
-
 // Player Events..
-function warnPlayer(playerId) {
-    let btnName = '#warnBtn' + playerId;
-    console.log(btnName, playerId);
+function warnPlayer(playerIdUiRef,playerId) {
+    let btnName = '#warnBtn' + playerIdUiRef;
+    console.log(btnName, playerIdUiRef);
 
     $(btnName).attr("disabled", true);
     $(btnName).removeClass("btn-outline-warning");
     $(btnName).addClass("btn-outline-dark");
+
+    $.ajax({
+        url: siteBaseUrl + "/api/test/WarnPlayer/" + playerId,
+        success: function (result) {
+            console.log(result);
+        }
+    });
 }
 
-function stopPlayer(playerId) {
+function stopPlayer(playerIdUiRef, playerId) {
+    let finishedPlayer = '.finished' + playerIdUiRef;
+    let btnPlayer = '.btn' + playerIdUiRef;
+
+    $(btnPlayer).hide();
+
+    $(finishedPlayer).removeAttr("hidden");
+    $(finishedPlayer).text(currentShuttleLevelNumber + "-" + currentShuttleNumber);
+
     console.log(playerId);
 }
 
