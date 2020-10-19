@@ -41,10 +41,6 @@ namespace YoYoTestDemo.Controllers
             return Ok(fitnessRatingData);
         }
 
-        //private ActionResult Json(object p)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         // GET api/<TestController>/5
         [HttpGet("{id}")]
