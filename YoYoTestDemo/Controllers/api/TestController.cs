@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using YoYoTestDemo.Models;
 using YoYoTestDemo.Services;
+using YoYoTestDemo.ViewModel;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,10 +28,11 @@ namespace YoYoTestDemo.Controllers
         }
 
         // GET: api/<TestController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("GetPlayers")]
+        public ActionResult GetPlayers()
         {
-            return new string[] { "value1", "value2" };
+
+            return Ok(_playerService.GetPlayers());
         }
 
         [HttpGet("FitnessRating")]
@@ -68,21 +70,13 @@ namespace YoYoTestDemo.Controllers
            
         }
 
-        [HttpGet("StopPlayer/{id}")]
-        public ActionResult StopPlayer(int id)
+        [HttpPost("ResultPlayer/{id}")]
+        public ActionResult ResultPlayer([FromForm]PlayerResultViewModel playerResultRecieved)
         {
-            var allPlayers = _playerService.GetPlayers();
-            try
-            {
-                int editIndex = allPlayers.FindIndex(o => o.id == id);
-                allPlayers[editIndex].stop = true;
-                return Ok(allPlayers[editIndex]);
-            }
-            catch (Exception)
-            {
-                return NotFound();
-            }
+            var playerResult = _playerService.resultPlayer(playerResultRecieved.id, playerResultRecieved.result);
+            Console.WriteLine(playerResultRecieved.id + " : " + playerResultRecieved.result);
 
+            return Ok(playerResult);
         }
 
         // GET api/<TestController>/5

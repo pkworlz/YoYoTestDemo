@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YoYoTestDemo.Models;
+using YoYoTestDemo.ViewModel;
 
 namespace YoYoTestDemo.Services
 {
+    public interface IPlayerService
+    {
+        List<Player> GetPlayers();
+        Player warnPlayer(int playerId);
+        PlayerResultViewModel resultPlayer(int playerId, string result);
+    }
+
     public class PlayerService : IPlayerService
     {
-        private List<Player> players = new List<Player>();
-
-        public Player EditPlayer(Player player)
-        {
-            int editIndex = players.FindIndex(o => o.id == player.id);
-            players[editIndex] = player;
-            return players[editIndex];
-        }
 
         public List<Player> GetPlayers()
         {
+            List<Player> players = new List<Player>();
 
             var player1 = new Player
             {
@@ -78,11 +79,29 @@ namespace YoYoTestDemo.Services
 
             return players;
         }
+
+        public PlayerResultViewModel resultPlayer(int playerId, string result)
+        {
+            var playerResult = new PlayerResultViewModel();
+            var playersList = GetPlayers();
+            int editIndex = playersList.FindIndex(o => o.id == playerId);
+            playerResult.id = playersList[editIndex].id;
+            playerResult.result = result;
+            //save data someware..
+
+            return playerResult;
+        }
+
+        public Player warnPlayer(int playerId)
+        {
+            var playersList = GetPlayers();
+            int editIndex = playersList.FindIndex(o => o.id == playerId);
+            playersList[editIndex].warn = true;
+            //save data someware..
+
+
+            return playersList[editIndex];
+        }
     }
 
-    public interface IPlayerService
-    {
-        List<Player> GetPlayers();
-        Player EditPlayer(Player player);
-    }
 }

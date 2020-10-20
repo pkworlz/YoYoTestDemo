@@ -14,4 +14,5 @@ namespace YoYoTestDemo.Models
         public int levelNumber { get; set; }
         public int shuttleNumber { get; set; }
     }
+
 }

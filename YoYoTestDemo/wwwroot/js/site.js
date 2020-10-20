@@ -23,6 +23,7 @@ var countDown;
 var siteBaseUrl = "https://localhost:5001";
 
 var fitnessRatingData;
+var allPlayersData;
 
 var progressBarObj = {start: 0, end: 0, current: 0}
 
@@ -50,12 +51,18 @@ function init() {
 
     //load json data..
     getFitnessRatingData();
+    getPlayersData();
 
     //init UI..
     $("#controls").removeAttr("hidden");
     $("#pauseBtn").hide();
     $("#playBtn").show();
 
+
+}
+
+function fitnessRatingDataLoaded() {
+    initProgressBarData();
 
 }
 
@@ -217,9 +224,17 @@ function getFitnessRatingData() {
     $.ajax({
         url: siteBaseUrl + "/api/test/FitnessRating", success: function (result) {
             fitnessRatingData = result;
-            initProgressBarData();
+            fitnessRatingDataLoaded();
             //console.log(result);
             //processSuttle();
+        }
+    });
+}
+
+function getPlayersData() {
+    $.ajax({
+        url: siteBaseUrl + "/api/test/GetPlayers", success: function (result) {
+            allPlayersData = result;
         }
     });
 }
@@ -250,11 +265,16 @@ function percentage(partialValue, totalValue) {
 // Player Events..
 function warnPlayer(playerIdUiRef,playerId) {
     let btnName = '#warnBtn' + playerIdUiRef;
+    let stopBtnName = '#stopBtn' + playerIdUiRef;
     console.log(btnName, playerIdUiRef);
 
     $(btnName).attr("disabled", true);
     $(btnName).removeClass("btn-outline-warning");
     $(btnName).addClass("btn-outline-dark");
+
+    $(stopBtnName).attr("disabled", false);
+
+
 
     $.ajax({
         url: siteBaseUrl + "/api/test/WarnPlayer/" + playerId,
@@ -265,15 +285,86 @@ function warnPlayer(playerIdUiRef,playerId) {
 }
 
 function stopPlayer(playerIdUiRef, playerId) {
+
     let finishedPlayer = '.finished' + playerIdUiRef;
+    let finishedPlayerDd = '#finished' + playerIdUiRef;
     let btnPlayer = '.btn' + playerIdUiRef;
 
     $(btnPlayer).hide();
 
     $(finishedPlayer).removeAttr("hidden");
-    $(finishedPlayer).text(currentShuttleLevelNumber + "-" + currentShuttleNumber);
+    //$(finishedPlayer).text(currentShuttleLevelNumber + "-" + currentShuttleNumber);
+    populateDropDown(finishedPlayerDd, currentShuttleLevelNumber, currentShuttleNumber);
 
     console.log(playerId);
+    let playerResult = currentShuttleLevelNumber + "-" + currentShuttleNumber;
+
+    setPlayerResult(playerId, playerResult);
+}
+
+function populateDropDown(playerIdentifier,currentShuttleLevelNumber, currentShuttleNumber) {
+    $(function () {
+        //Reference the DropDownList.
+        var ddPlayerResult = $(playerIdentifier);
+
+        var option1 = $("<option />");
+        option1.html("Choose");
+        option1.val("");
+        ddPlayerResult.append(option1);
+
+        //Loop and add the Year values to DropDownList.
+        $.each(fitnessRatingData, function (index, item) {
+            var option = $("<option />");
+            option.html(item.speedLevel + "-" + item.shuttleNo);
+            option.val(item.speedLevel + "-" + item.shuttleNo);
+            if (item.speedLevel === currentShuttleLevelNumber && item.shuttleNo === currentShuttleNumber) {
+                option.attr("selected",true);
+            }
+            ddPlayerResult.append(option);
+            //console.log(item);
+        });
+        
+    });
+}
+
+function playerResultChanged(playerId, playerElementRefId) {
+    var playerRef = "#" + playerElementRefId;
+    console.log(playerId, playerElementRefId, $(playerRef).val());
+    let playerResult = $(playerRef).val();
+    setPlayerResult(playerId, playerResult);
+
+}
+
+function setPlayerResult(playerId, playerResult) {
+    $.ajax({
+        url: siteBaseUrl + "/api/test/ResultPlayer/" + playerId,
+        type: "POST",
+        data: {
+            id: playerId,
+            result: playerResult
+        },
+        success: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+function finishTest() {
+    $.each(allPlayersData, function (index, item) {
+        let runningPlayer = ".finishedPlayer-" + item.id;
+
+        if ($(runningPlayer).attr("hidden")) {
+            let nonfinishedPlayer = "Player-" + item.id;
+
+            stopPlayer(nonfinishedPlayer, item.id);
+
+            console.log(item.id);
+
+        } 
+
+    })
+    // finished..
+    stop();
 }
 
 

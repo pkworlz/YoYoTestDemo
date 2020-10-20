@@ -57,6 +57,7 @@
             <p>Participants </p>
             <hr />
         </div>
+        <span class="float-right"><button id="finishTestBtn" onclick='finishTest();' type="button" class="btn btn-outline-success btn-sm rounded-pill">Finish Test</button></span>
     </div>
 
     @{ 
@@ -74,9 +75,9 @@
                 <button id="warnBtnPlayer-@item.id" onclick='warnPlayer("Player-@item.id", @item.id);' type="button" class="btn btn-outline-warning btn-sm rounded-pill">Warn</button>
             </div>
             <div class="col-2 btnPlayer-@item.id btnPlayer" hidden>
-                <button id="stopBtnPlayer-@item.id" onclick='stopPlayer("Player-@item.id", @item.id);' type="button" class="btn btn-outline-danger btn-sm rounded-pill">Stop</button>
+                <button id="stopBtnPlayer-@item.id" disabled="disabled" onclick='stopPlayer("Player-@item.id", @item.id);' type="button" class="btn btn-outline-danger btn-sm rounded-pill">Stop</button>
             </div>
-            <div class="col-4 finishedPlayer-@item.id" hidden> </div>
+            <div class="col-4 finishedPlayer-@item.id" hidden> <select id="finishedPlayer-@item.id" onchange='playerResultChanged(@item.id, "finishedPlayer-"+@item.id)'></select></div>
         </div>
         <br />
 
