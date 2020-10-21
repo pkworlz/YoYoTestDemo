@@ -58,6 +58,8 @@ function init() {
     $("#pauseBtn").hide();
     $("#playBtn").show();
 
+    $("#restartBtn").hide();
+
 
 }
 
@@ -89,7 +91,12 @@ function start() {
     $("#playBtn").hide();
 
     $(".btnPlayer").removeAttr("hidden");
+    $("#finishTestBtn").removeAttr("hidden");
 
+}
+
+function restart() {
+    location.reload();
 }
 
 // Timer Logic..
@@ -129,7 +136,7 @@ function countDownTimer() {
 
 // Second Minute Helper
 function pad(val) {
-    var valString = val + "";
+    let valString = val + "";
     if (valString.length < 2) {
         return "0" + valString;
     } else {
@@ -252,7 +259,7 @@ function calculateCountDownTime(currentRating, nextRating) {
 }
 
 function calculateProgressBarData() {
-    var progressPercent = percentage(parseInt(progressBarObj.current), parseInt(progressBarObj.end));
+    let progressPercent = percentage(parseInt(progressBarObj.current), parseInt(progressBarObj.end));
     //console.log(progressPercent);
     $("#speed-level-progress-bar").css('width', progressPercent + '%');
 }
@@ -305,16 +312,16 @@ function stopPlayer(playerIdUiRef, playerId) {
 function populateDropDown(playerIdentifier,currentShuttleLevelNumber, currentShuttleNumber) {
     $(function () {
         //Reference the DropDownList.
-        var ddPlayerResult = $(playerIdentifier);
+        let ddPlayerResult = $(playerIdentifier);
 
-        var option1 = $("<option />");
+        let option1 = $("<option />");
         option1.html("Choose");
         option1.val("");
         ddPlayerResult.append(option1);
 
         //Loop and add the Year values to DropDownList.
         $.each(fitnessRatingData, function (index, item) {
-            var option = $("<option />");
+            let option = $("<option />");
             option.html(item.speedLevel + "-" + item.shuttleNo);
             option.val(item.speedLevel + "-" + item.shuttleNo);
             if (item.speedLevel === currentShuttleLevelNumber && item.shuttleNo === currentShuttleNumber) {
@@ -328,7 +335,7 @@ function populateDropDown(playerIdentifier,currentShuttleLevelNumber, currentShu
 }
 
 function playerResultChanged(playerId, playerElementRefId) {
-    var playerRef = "#" + playerElementRefId;
+    let playerRef = "#" + playerElementRefId;
     console.log(playerId, playerElementRefId, $(playerRef).val());
     let playerResult = $(playerRef).val();
     setPlayerResult(playerId, playerResult);
@@ -363,8 +370,17 @@ function finishTest() {
         } 
 
     })
+
+
     // finished..
     stop();
+
+    $("#finishTestBtnEle").text("Finished");
+
+    $("#pauseBtn").hide();
+    $("#playBtn").hide();
+
+    $("#restartBtn").show();
 }
 
 

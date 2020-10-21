@@ -36,7 +36,7 @@ namespace YoYoTestDemo
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            // custom services
+            // custom services..
             services.AddScoped<IPlayerService, PlayerService>();
         }
 

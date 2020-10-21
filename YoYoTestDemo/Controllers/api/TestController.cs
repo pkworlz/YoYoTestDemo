@@ -27,11 +27,10 @@ namespace YoYoTestDemo.Controllers
             _playerService = playerService;
         }
 
-        // GET: api/<TestController>
+        
         [HttpGet("GetPlayers")]
         public ActionResult GetPlayers()
         {
-
             return Ok(_playerService.GetPlayers());
         }
 
@@ -79,23 +78,6 @@ namespace YoYoTestDemo.Controllers
             return Ok(playerResult);
         }
 
-        // GET api/<TestController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // PUT api/<TestController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<TestController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }
