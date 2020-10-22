@@ -197,7 +197,7 @@ function processSuttle() {
 
                 if (index === fitnessRatingData.length - 1) {
                     // finished..
-                    stop();
+                    finishTest();
                 }
                 
 
