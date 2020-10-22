@@ -20,7 +20,7 @@ var cdTimerElement;
 var cdCurrentTime;
 var countDown;
 
-var siteBaseUrl = "https://localhost:5001";
+var siteBaseUrl = "";
 
 var fitnessRatingData;
 var allPlayersData;
